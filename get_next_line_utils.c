@@ -127,7 +127,7 @@ char	*ft_strtrim(const char *s1, char const *set)
 	end = ft_strlen(s1);
 	while (end && ft_strchr(set, s1[end]))
 		end--;
-	return (ft_substr(s1, 0, end + 2));
+	return (ft_substr(s1, 0, end + 1));
 }
 
 int	ft_search_n(const char *s1)
@@ -142,7 +142,7 @@ int	ft_search_n(const char *s1)
 		if(s1[i] == '\n')
 		{
 			nLocation = i + 1;
-			break;	//no se si el plus uno sobra
+			break;
 		}
 		i++;
 	}
