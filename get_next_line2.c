@@ -19,11 +19,15 @@ char *get_next_line(int fd)
 	char		*buf;
 	char		*line;
 	static char	*holder;
+	char		*temp;
 	size_t		a;
 	int		n;
+	int		contador;
 
+	contador = 0;
 	n = 0;
 	line = ft_strdup("");
+	temp = ft_strdup("");
 	buf = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if(fd == -1 || BUFFER_SIZE <= 0)
 		return(NULL);				
@@ -34,20 +38,31 @@ char *get_next_line(int fd)
 		a = read(fd, buf, BUFFER_SIZE);
 		if(a == 0)
 		{
-			printf("q hay holder= %s\n", holder);
 			line = (char *)malloc(sizeof(char) * (ft_strlen(holder) + 1));
 			line = ft_strjoin(line, holder);
 			free(buf);
 			return(line);
 		}
+		else if(a < BUFFER_SIZE && a > 0 && contador != 0)
+		{
+			//temp = (char *)malloc(sizeof(char) * a + 1);
+			ft_strlcpy(temp, buf, a + 1);
+			line = (char *)malloc(sizeof(char) * (ft_strlen(holder) + a + 1));
+			line = ft_strjoin(holder, temp);
+			free(buf);
+			return(line);
+		}
 		holder = ft_strjoin(holder, buf);
+		contador = 1;
 	}
 	//ok ahora ya si que hay \n
 	n = ft_search_n(holder);
-	line = (char *)malloc((n) * sizeof(char));
+	line = (char *)malloc((n + 1) * sizeof(char));
 	ft_strlcpy(line, holder, n + 1);
-	holder = ft_strtrim(holder, line); 				//EL TRIM ME HACE MAL!!! en la ultima linea
-	//printf("quiero ver lo que hay en holder = %s\n", holder);
+	printf("holder5 -> %s\n", holder);
+	printf("linea -> %s\n", line);
+	holder = ft_strtrim(holder, line);	//el problema esta en el trim (teng q crear mi propio trim) que cuente el tamaño de linea, y el holder sea holder(desde len linea)
+	printf("quiero ver lo que hay en holder = %s\n", holder);
 	free(buf);
 	return(line);	
 }
@@ -64,7 +79,6 @@ int main()
 	{
 		result = get_next_line(fd);
 		printf("RESULTADO =%s", result);
-		sleep(2);
 		i++;
 	}
 	return(0);
