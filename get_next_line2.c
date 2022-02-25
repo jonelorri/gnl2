@@ -23,6 +23,9 @@ char *get_next_line(int fd)
 	size_t		a;
 	int		n;
 	int		contador;
+	int		len_trim;
+	int		len_trim2;
+	int		i;
 
 	contador = 0;
 	n = 0;
@@ -61,7 +64,7 @@ char *get_next_line(int fd)
 	ft_strlcpy(line, holder, n + 1);
 	printf("holder5 -> %s\n", holder);
 	printf("linea -> %s\n", line);
-	holder = ft_strtrim(holder, line);	//el problema esta en el trim (teng q crear mi propio trim) que cuente el tamaño de linea, y el holder sea holder(desde len linea)
+	holder = ft_strtrim(holder, line);		//tenog q hacer trim de otra forma
 	printf("quiero ver lo que hay en holder = %s\n", holder);
 	free(buf);
 	return(line);	
