@@ -5,12 +5,14 @@
 
 size_t	ft_strlen(const char *str)
 {
-	size_t	str_len;
+	size_t	i;
 
-	str_len = 0;
-	while (*str++)
-		str_len++;
-	return (str_len);
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
+		i++;
+	return (i);
 }
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
@@ -89,8 +91,12 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	if (!s1 || !s2)
 		return (NULL);
+	//printf("s1 = %s\n s2 = %s\n", s1, s2);
 	s1_len = ft_strlen(s1);
+	//printf("uno %d\n", s1_len);
 	s2_len = ft_strlen(s2);
+	//printf("dos %d\n",s2_len);
+	
 	dest = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
 	if (!dest)
 		return (NULL);
@@ -101,33 +107,39 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*dest;
+	char	*srt;
+	size_t	i;
+	size_t	j;
 
-	if (!s)
+	i = 0;
+	if (!s || len < 0)
 		return (NULL);
-	if (start > ft_strlen(s))
-		return (ft_strdup(""));
-	if (ft_strlen(s) < len)
-		len = ft_strlen(s);
-	dest = (char *)malloc(sizeof(char) * len + 1);
-	if (!dest)
+	srt = (char *)malloc(len + 1);
+	if (!srt)
 		return (NULL);
-	ft_strlcpy(dest, &s[start], len + 1);
-	return (dest);
+	j = 0;
+	while (s[j] != '\0')
+		j++;
+	while (start < j && i < len)
+	{
+		srt[i] = s[start];
+		i++;
+		start++;
+	}
+	srt[i] = '\0';
+	return (srt);
 }
 
 char	*ft_strtrim(const char *s1, char const *set)
 {
 	size_t	end;
 
+	end = 1;
 	if (!s1 || !set)
 		return (NULL);
 	while (*s1 != '\0' && ft_strchr(set, *s1))
 		s1++;
-	end = ft_strlen(s1);
-	while (end && ft_strchr(set, s1[end]))
-		end--;
-	return (ft_substr(s1, 0, end + 1));
+	return (ft_substr(s1, 0, ft_strlen(s1)));
 }
 
 int	ft_search_n(const char *s1)
@@ -137,7 +149,7 @@ int	ft_search_n(const char *s1)
 
 	nLocation = 0;
 	i = 0;
-	while(i < ft_strlen(s1))
+	while(i < (int)ft_strlen(s1))
 	{
 		if(s1[i] == '\n')
 		{
