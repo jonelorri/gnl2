@@ -22,11 +22,12 @@ int main()
 	int i;
 
 	i = 0;
-	fd = open("/Users/jelorria/cursus/gnl2/5text.txt", O_RDONLY);
-	while(i < 9)
+	fd = open("/Users/jelorria/cursus/gnl2/text.txt", O_RDONLY);
+	while(i < 6)
 	{
 		result = get_next_line(fd);
 		printf("RESULTADO =%s", result);
+		free(result);
 		i++;
 	}
 	return(0);

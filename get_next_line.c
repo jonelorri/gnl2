@@ -18,67 +18,49 @@ char *get_next_line(int fd)
 {
 	char		*buf;
 	char		*line;
-	static char	*holder;
 	char		*temp;
+	static char	*holder;
 	size_t		a;
 	int			n;
-	int			contador;
 
 	if(fd < 0 || BUFFER_SIZE <= 0)
 		return(NULL);
-	contador = 0;
-	n = 0;
 	line = ft_strdup("");
 	temp = ft_strdup("");
 	buf = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buf)
-		return (NULL);
-	//printf("holder2 -> %s\n", holder); 
+	if(!buf)
+		return (NULL); 
 	if(!holder)
 		holder = ft_strdup("");
-	//printf("holder3 -> %s\n", holder);
-	while(!ft_strchr(holder, '\n'))	//bucle principal Read
+	while(!ft_strchr(holder, '\n'))
 	{
 		a = read(fd, buf, BUFFER_SIZE);
-		if(a == 0 && contador != 0)
+		buf[a] = 00;
+		//printf("a ->%zu\n", a);
+		if(a == 0)
 		{
-			line = (char *)malloc(sizeof(char) * (ft_strlen(holder) + 1));
-			line = ft_strjoin(line, holder);
-			free(holder);
-			free(buf);
-			return(line);
+			if(ft_strlen(holder) > 0)
+			{
+				line = (char *)malloc(sizeof(char) + ft_strlen(holder) + 1);
+				line = holder;
+				holder = ft_strdup("");
+				return(line);
+			}
+			else
+				return(NULL);
 		}
-		else if(a == 0 && contador == 0)
-			return(NULL);
-		else if(a < BUFFER_SIZE && a > 0 && contador == 0 && !ft_strchr(buf, '\n'))
+		if(a < BUFFER_SIZE && a > 0)
 		{
-			line = (char *)malloc(sizeof(char) * (a + ft_strlen(holder)) + 1);
-			line = ft_strjoin(holder, buf);
-			free(buf);
-			return(line);
-		}
-		else if(a < BUFFER_SIZE && a > 0 && contador != 0 && !ft_strchr(buf, '\n'))
-		{
-			temp = (char *)malloc(sizeof(char) * a + 1);
+			//printf("holder->%s buf->%s a->%zu\n", holder, buf, a);	
 			ft_strlcpy(temp, buf, a + 1);
-			line = (char *)malloc(sizeof(char) * (ft_strlen(holder) + a + 1));
-			line = ft_strjoin(holder, temp);
-			free(temp);
-			free(buf);
-			return(line);
+			holder = ft_strjoin(holder, temp);
 		}
-		holder = ft_strjoin(holder, buf);
-		contador = 1;
-	}	
-	//ok ahora ya si que hay \n
-	//printf("holder4 -> %s\n", holder);
+		if(a == BUFFER_SIZE)
+			holder = ft_strjoin(holder, buf);
+	}
 	n = ft_search_n(holder);
-	line = (char *)malloc((n + 1) * sizeof(char));
+	line = (char *)malloc((n + ft_strlen(holder) + 1) * sizeof(char));
 	ft_strlcpy(line, holder, n + 1);
-	//printf("holder5 -> %s\n", holder);
-	//printf("linea -> %s\n", line);
-	holder = ft_strtrim(holder, line);		//tenog q hacer trim de otra forma
-	printf("quiero ver lo que hay en holder = %s\n", holder);
-	free(buf);
+	holder = ft_strtrim(holder, line);
 	return(line);	
 }
