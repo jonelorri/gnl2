@@ -32,11 +32,12 @@ char *get_next_line(int fd)
 		return (NULL); 
 	if(!holder)
 		holder = ft_strdup("");
-	while(!ft_strchr(holder, '\n'))
+	printf("holder1 ->%s\n", holder);
+	while(ft_search_n(holder) == 0)
 	{
 		a = read(fd, buf, BUFFER_SIZE);
 		buf[a] = 00;
-		//printf("a ->%zu\n", a);
+		printf("a ->%zu\n holder ->%s\n", a, holder);
 		if(a == 0)
 		{
 			if(ft_strlen(holder) > 0)
@@ -54,6 +55,7 @@ char *get_next_line(int fd)
 			//printf("holder->%s buf->%s a->%zu\n", holder, buf, a);	
 			ft_strlcpy(temp, buf, a + 1);
 			holder = ft_strjoin(holder, temp);
+			printf("holder3 ->%s\n", holder);
 		}
 		if(a == BUFFER_SIZE)
 			holder = ft_strjoin(holder, buf);
@@ -61,6 +63,8 @@ char *get_next_line(int fd)
 	n = ft_search_n(holder);
 	line = (char *)malloc((n + ft_strlen(holder) + 1) * sizeof(char));
 	ft_strlcpy(line, holder, n + 1);
-	holder = ft_strtrim(holder, line);
+	printf("holder anteulti-> %s\n", holder);
+	holder = ft_strtrim(holder, line); //OTRA VEZ EL TRIM DANDO X CULO JEJJEJE aprende a usar substr
+	printf("holder ulti->%s\n", holder);
 	return(line);	
 }
