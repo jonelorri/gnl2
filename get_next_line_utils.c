@@ -127,6 +127,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		start++;
 	}
 	srt[i] = '\0';
+	//free((char *)s);
 	return (srt);
 }
 
@@ -134,7 +135,6 @@ char	*ft_strtrim(const char *s1, char const *set)
 {
 	size_t	end;
 
-	//printf("s1 ->%s\nset ->%s\n", s1, set);
 	end = 1;
 	if (!s1 || !set)
 		return (NULL);
@@ -145,7 +145,6 @@ char	*ft_strtrim(const char *s1, char const *set)
 			break;
 	if(*s1 == '\n')
 		s1++;
-	//printf("s1! ->%s\n", s1);
 	return (ft_substr(s1, 0, ft_strlen(s1)));
 }
 

@@ -22,7 +22,7 @@ char *get_next_line(int fd)
 	char		*temp;
 	static char	*holder;
 	size_t		a;
-	int			n;
+	int		n;
 
 	if(fd < 0 || BUFFER_SIZE <= 0)
 		return(NULL);
@@ -33,33 +33,31 @@ char *get_next_line(int fd)
 		return (NULL); 
 	if(!holder)
 		holder = ft_strdup("");
-	//printf("holder1 ->%s\n", holder);
 	while(ft_search_n(holder) == 0)
 	{
 		a = read(fd, buf, BUFFER_SIZE);
 		buf[a] = 00;
-		//printf("a ->%zu\nholder ->%s\n", a, holder);
 		if(a == 0)
 		{
 			if(ft_strlen(holder) > 0)
 			{
-				line = (char *)malloc(sizeof(char) + ft_strlen(holder) + 1);
+				line = (char *)malloc(sizeof(char) * ft_strlen(holder) + 1);
 				line = holder;
+				holder = NULL;	
 				return(line);
 			}
 			else
 				return(NULL);
 		}
 		if(a < BUFFER_SIZE && a > 0)
-		{
-			//printf("holder->%s buf->%s a->%zu\n", holder, buf, a);	
+		{	
 			if(ft_strlen(holder) > 0)
 			{
+				temp = (char *)malloc(sizeof(char) * (a + 1));
 				ft_strlcpy(temp, buf, a + 1);
-				//printf("temp ->%s\n", temp);
 				holder = ft_strjoin(holder, temp);
-				temp = ft_strdup("");
-				//printf("holder3 ->%s\n", holder);
+				free(temp);
+				temp = NULL;
 			}
 			else
 				ft_strlcpy(holder, buf, a + 1);
@@ -70,11 +68,7 @@ char *get_next_line(int fd)
 	n = ft_search_n(holder);
 	line = (char *)malloc((n + 1) * sizeof(char));
 	ft_strlcpy(line, holder, n + 1);
-	//line[n] = 00;
-	//printf("holder anteulti->%s\n", holder);
-	//printf("line ->%s\n", line);
 	holder = ft_strtrim(holder, line);
-	//printf("holder ulti->%s\n", holder);
 	free(buf);
 	return(line);
 }
