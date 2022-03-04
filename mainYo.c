@@ -22,8 +22,8 @@ int main()
 	int i;
 
 	i = 0;
-	fd = open("/Users/jelorria/cursus/gnl2/gnlTester/files/multiple_line_no_nl", O_RDONLY);
-	while(i < 3)
+	fd = open("/Users/jonelorriaga/programacion/42/gnl2/6text.txt", O_RDONLY);
+	while(i < 4)
 	{
 		result = get_next_line(fd);
 		printf("RESULTADO =%s", result);

@@ -160,3 +160,26 @@ int	ft_search_n(const char *s1)
 	}
 	return(nLocation);
 }
+/*
+char	*ft_fromn(char *holder)
+{
+	char	*temp;
+	int	n;
+	int	len;
+	int	i;
+	int	z;
+
+	n = ft_search_n(holder);
+	len = ft_strlen(holder);
+	temp = (char *)malloc(sizeof(char) *  (len - n + 1));
+	i = 0;
+	z = n;
+	while(i < (len - n))
+	{
+		temp[i] = holder[n];
+		i++;
+		n++;
+	}
+	return(temp);
+}
+*/

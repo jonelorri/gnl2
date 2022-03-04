@@ -11,8 +11,9 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strtrim(const char *s1, char const *set);
-int		ft_search_n(const char *s1);
+int	ft_search_n(const char *s1);
 char	*ft_strchr(const char *s, int c);
+char	*ft_fromn(char *holder);
 
 char *get_next_line(int fd)
 {
@@ -37,14 +38,13 @@ char *get_next_line(int fd)
 	{
 		a = read(fd, buf, BUFFER_SIZE);
 		buf[a] = 00;
-		printf("a ->%zu\n holder ->%s\n", a, holder);
+		printf("a ->%zu\nholder ->%s\n", a, holder);
 		if(a == 0)
 		{
 			if(ft_strlen(holder) > 0)
 			{
 				line = (char *)malloc(sizeof(char) + ft_strlen(holder) + 1);
 				line = holder;
-				holder = ft_strdup("");
 				return(line);
 			}
 			else
@@ -52,19 +52,30 @@ char *get_next_line(int fd)
 		}
 		if(a < BUFFER_SIZE && a > 0)
 		{
-			//printf("holder->%s buf->%s a->%zu\n", holder, buf, a);	
-			ft_strlcpy(temp, buf, a + 1);
-			holder = ft_strjoin(holder, temp);
-			printf("holder3 ->%s\n", holder);
+			printf("holder->%s buf->%s a->%zu\n", holder, buf, a);	
+			if(ft_strlen(holder) > 0)
+			{
+				ft_strlcpy(temp, buf, a + 1);
+				printf("temp ->%s\n", temp);
+				holder = ft_strjoin(holder, temp);
+				temp = ft_strdup("");
+				printf("holder3 ->%s\n", holder);
+			}
+			else
+				ft_strlcpy(holder, buf, a + 1);
 		}
 		if(a == BUFFER_SIZE)
 			holder = ft_strjoin(holder, buf);
 	}
 	n = ft_search_n(holder);
-	line = (char *)malloc((n + ft_strlen(holder) + 1) * sizeof(char));
+	line = (char *)malloc((n + 1) * sizeof(char));
 	ft_strlcpy(line, holder, n + 1);
-	printf("holder anteulti-> %s\n", holder);
-	holder = ft_strtrim(holder, line); //OTRA VEZ EL TRIM DANDO X CULO JEJJEJE aprende a usar substr
+	//line[n] = 00;
+	printf("holder anteulti->%s\n", holder);
+	printf("line ->%s\n", line);
+	temp = ft_strtrim(holder, line); //OTRA VEZ EL TRIM DANDO X CULO JEJJEJE aprende a usar substr
+	holder = temp;
 	printf("holder ulti->%s\n", holder);
-	return(line);	
+	free(buf);
+	return(line);
 }
