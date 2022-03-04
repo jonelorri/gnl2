@@ -134,11 +134,18 @@ char	*ft_strtrim(const char *s1, char const *set)
 {
 	size_t	end;
 
+	//printf("s1 ->%s\nset ->%s\n", s1, set);
 	end = 1;
 	if (!s1 || !set)
 		return (NULL);
 	while (*s1 != '\0' && ft_strchr(set, *s1))
+		if(*s1 != '\n')
+			s1++;
+		else
+			break;
+	if(*s1 == '\n')
 		s1++;
+	//printf("s1! ->%s\n", s1);
 	return (ft_substr(s1, 0, ft_strlen(s1)));
 }
 
@@ -160,26 +167,3 @@ int	ft_search_n(const char *s1)
 	}
 	return(nLocation);
 }
-/*
-char	*ft_fromn(char *holder)
-{
-	char	*temp;
-	int	n;
-	int	len;
-	int	i;
-	int	z;
-
-	n = ft_search_n(holder);
-	len = ft_strlen(holder);
-	temp = (char *)malloc(sizeof(char) *  (len - n + 1));
-	i = 0;
-	z = n;
-	while(i < (len - n))
-	{
-		temp[i] = holder[n];
-		i++;
-		n++;
-	}
-	return(temp);
-}
-*/
