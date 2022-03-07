@@ -24,18 +24,19 @@ char *get_next_line(int fd)
 	size_t		a;
 	int		n;
 
-	if(fd < 0 || BUFFER_SIZE <= 0)
+	if(fd <= 0 || BUFFER_SIZE <= 0)
 		return(NULL);
-	line = ft_strdup("");
-	temp = ft_strdup("");
 	buf = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if(!buf)
 		return (NULL); 
-	if(!holder)
+	//si holder viene ya cargado....
 		holder = ft_strdup("");
+	line = ft_strdup("");
+	temp = ft_strdup("");
 	while(ft_search_n(holder) == 0)
 	{
 		a = read(fd, buf, BUFFER_SIZE);
+		//printf("a ->%zu\n", a);
 		buf[a] = 00;
 		if(a == 0)
 		{
@@ -43,32 +44,48 @@ char *get_next_line(int fd)
 			{
 				line = (char *)malloc(sizeof(char) * ft_strlen(holder) + 1);
 				line = holder;
-				holder = NULL;	
+				holder = NULL;
+				free(holder);
+				free(buf);
+				free(temp);
 				return(line);
 			}
 			else
+			{
+				free(line);
+				free(temp);
+				free(buf);
+				free(holder);
 				return(NULL);
+			}
 		}
-		if(a < BUFFER_SIZE && a > 0)
+		else if(a < BUFFER_SIZE && a > 0)
 		{	
 			if(ft_strlen(holder) > 0)
 			{
 				temp = (char *)malloc(sizeof(char) * (a + 1));
 				ft_strlcpy(temp, buf, a + 1);
 				holder = ft_strjoin(holder, temp);
-				free(temp);
 				temp = NULL;
 			}
 			else
+			{
+				holder = (char *)malloc(sizeof(char) * (ft_strlen(holder) + a + 1));
 				ft_strlcpy(holder, buf, a + 1);
+			}
 		}
-		if(a == BUFFER_SIZE)
+		else if(a == BUFFER_SIZE)
 			holder = ft_strjoin(holder, buf);
 	}
+	//printf("holder 1->%s\n", holder);
 	n = ft_search_n(holder);
 	line = (char *)malloc((n + 1) * sizeof(char));
+	//printf("holder 2->%s\n", holder);
 	ft_strlcpy(line, holder, n + 1);
+	//printf("holder 3->%s\n", holder);
 	holder = ft_strtrim(holder, line);
+	//printf("holder post trim ->%s\n", holder);
 	free(buf);
+	free(temp);
 	return(line);
 }

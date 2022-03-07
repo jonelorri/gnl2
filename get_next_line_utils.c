@@ -102,6 +102,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (NULL);
 	ft_strlcpy(dest, s1, s1_len + 1);
 	ft_strlcat(&dest[s1_len], s2, s2_len + 1);
+	free((char *)s1);
 	return (dest);
 }
 
@@ -114,7 +115,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	i = 0;
 	if (!s || len < 0)
 		return (NULL);
-	srt = (char *)malloc(len + 1);
+	srt = (char *)malloc(len + 1 * (sizeof(char)));
 	if (!srt)
 		return (NULL);
 	j = 0;
@@ -127,7 +128,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		start++;
 	}
 	srt[i] = '\0';
-	//free((char *)s);
 	return (srt);
 }
 

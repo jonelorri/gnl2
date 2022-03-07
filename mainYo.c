@@ -11,7 +11,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strtrim(const char *s1, char const *set);
-int		ft_search_n(const char *s1);
+int	ft_search_n(const char *s1);
 char	*ft_strchr(const char *s, int c);
 char	*get_next_line(int fd);
 
@@ -22,8 +22,8 @@ int main()
 	int i;
 
 	i = 0;
-	fd = open("/Users/jonelorriaga/programacion/42/gnl2/ntext.txt", O_RDONLY);
-	while(i < 4)
+	fd = open("/Users/jonelorriaga/programacion/42/gnl2/text.txt", O_RDONLY);
+	while(i < 7)
 	{
 		result = get_next_line(fd);
 		printf("RESULTADO =%s", result);
