@@ -24,12 +24,12 @@ char *get_next_line(int fd)
 	size_t		a;
 	int		n;
 
-	if(fd <= 0 || BUFFER_SIZE <= 0)
+	if(fd < 0 || BUFFER_SIZE <= 0)
 		return(NULL);
 	buf = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if(!buf)
 		return (NULL); 
-	//si holder viene ya cargado....
+	if(!holder)
 		holder = ft_strdup("");
 	line = ft_strdup("");
 	temp = ft_strdup("");
@@ -55,6 +55,7 @@ char *get_next_line(int fd)
 				free(line);
 				free(temp);
 				free(buf);
+				holder = NULL;
 				free(holder);
 				return(NULL);
 			}
