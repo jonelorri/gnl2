@@ -22,7 +22,7 @@ int main()
 	int i;
 
 	i = 0;
-	fd = open("/Users/jonelorriaga/programacion/42/gnl2/text.txt", O_RDONLY);
+	fd = open("/Users/jelorria/cursus/gnl2/gnlTester/files/alternate_line_nl_with_nl", O_RDONLY);
 	while(i < 7)
 	{
 		result = get_next_line(fd);

@@ -134,7 +134,9 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 char	*ft_strtrim(const char *s1, char const *set)
 {
 	size_t	end;
+	char *ptr;
 
+	ptr = (char *)s1;
 	end = 1;
 	if (!s1 || !set)
 		return (NULL);
@@ -145,6 +147,7 @@ char	*ft_strtrim(const char *s1, char const *set)
 			break;
 	if(*s1 == '\n')
 		s1++;
+	free(ptr);
 	return (ft_substr(s1, 0, ft_strlen(s1)));
 }
 
