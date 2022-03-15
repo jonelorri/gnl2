@@ -11,7 +11,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strtrim(const char *s1, char const *set);
-int	ft_search_n(const char *s1);
+int		ft_search_n(const char *s1);
 char	*ft_strchr(const char *s, int c);
 char	*ft_fromn(char *holder);
 
@@ -22,7 +22,7 @@ char *get_next_line(int fd)
 	char		*temp;
 	static char	*holder;
 	size_t		a;
-	int		n;
+	int			n;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -32,6 +32,13 @@ char *get_next_line(int fd)
 	while(ft_search_n(holder) == 0)
 	{
 		a = read(fd, buf, BUFFER_SIZE);
+		if ((int)a == -1)
+		{
+			free(buf);
+			free(holder);
+			holder = NULL;
+			return (NULL);
+		}
 		buf[a] = 00;
 		if(a == 0)
 		{
@@ -78,3 +85,4 @@ char *get_next_line(int fd)
 	free(buf);
 	return(line);
 }
+
